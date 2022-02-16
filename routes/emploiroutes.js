@@ -8,6 +8,7 @@ const router = express.Router();
 
 
 router.get("/:eid", emploiController.getEmploiById);
+router.get("/", emploiController.getEmplois);
 router.post('/',
     [
             check('matiere'),

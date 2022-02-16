@@ -103,7 +103,19 @@ const deleteEmploi= async(req, res, next) =>{
     }
     res.status(200).json({message: 'emploi supprimer.'});
 };
-
+const getEmplois = async (req, res, next) => {
+  let emplois;
+  try{
+    emplois = await Emploi.find({},'matiere jour heure');
+  }
+  catch(err){
+    const error = new Error('Erreur lors du chargemet de la page, réessayez plus tard.');
+        error.code= 500;
+        return next(error);
+  }
+  res.json({ emplois: emplois.map(emploi => emploi.toObject({ getter : true })) });
+};
+exports.getEmplois = getEmplois;
 exports.getEmploiById = getEmploiById;
 exports.createEmploi = createEmploi;
 exports.updateEmploi = updateEmploi;
