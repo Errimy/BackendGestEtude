@@ -103,15 +103,17 @@ const updateUser = async (req, res, next) => {
   
     const { nom, prenom, email, mdp, classe_user, role } = req.body;
     const userId = req.params.uid;
-  
+
+
     let user;
     try {
       user = await User.findById(userId);
     } catch (err) {
-        const error = new Error('Erreur lors de la modification de ce compte, réessayez.');
+        const error = new Error('Erreur lors de la modification de ce compte.');
         error.code= 500;
       return next(error);
     }
+
   
     user.nom = nom;
     user.prenom = prenom;
@@ -121,9 +123,14 @@ const updateUser = async (req, res, next) => {
     user.role = role;
   
     try {
-      await user.save();
+      await User.findOneAndUpdate(
+        { userId : userId},
+        user,
+        { runValidators: false, context: 'query' }
+    )
     } catch (err) {
-      const error = new Error('Erreur lors de la modification de ce compte, réessayez.');
+      console.log(err);
+      const error = new Error('Erreur lors de la sauvegarde de modification de ce compte.'+err);
       error.code= 500;
       return next(error);
     }
