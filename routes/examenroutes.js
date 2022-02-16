@@ -8,6 +8,7 @@ const router = express.Router();
 
 
 router.get("/:exid", examenController.getExamenById);
+router.get("/", examenController.getExamens);
 router.post('/',
     [
             check('matiere').not().isEmpty(),

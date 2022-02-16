@@ -106,8 +106,20 @@ const deleteExamen= async(req, res, next) =>{
     res.status(200).json({message: 'examen supprimer.'});
 
 };
-
+const getExamens = async (req, res, next) => {
+  let examens;
+  try{
+    examens = await Examen.find({},'matiere nom_etudiant note date');
+  }
+  catch(err){
+    const error = new Error('Erreur lors du chargemet de la page, réessayez plus tard.');
+        error.code= 500;
+        return next(error);
+  }
+  res.json({ examens: examens.map(examen => examen.toObject({ getter : true })) });
+};
 exports.getExamenById= getExamenById;
 exports.createExamen= createExamen;
 exports.updateExamen= updateExamen;
 exports.deleteExamen= deleteExamen;
+exports.getExamens= getExamens;
