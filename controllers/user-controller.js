@@ -202,18 +202,18 @@ const login = async (req, res, next) => {
   try {
     existingUser = await User.findOne({ email: email })
   } catch (err) {
-    const error = new Error('La connexion a échoué, réessayez.');
+    const error = new Error('La connexion a échoué,pb email, réessayez.'+err);
         error.code= 500;
         return next(error);
   }
 
   if (!existingUser || existingUser.mdp !== mdp) {
-    const error = new Error('La connexion a échoué, réessayez.');
+    const error = new Error('La connexion a échoué, pb password réessayez.');
         error.code= 500;
         return next(error);
   }
 
-  res.json({message: 'Connexion réussie.'});
+  res.json({message: 'Connexion réussie.', user:existingUser});
 };
 
 const getUsers = async (req, res, next) => {
