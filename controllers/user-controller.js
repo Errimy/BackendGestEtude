@@ -123,8 +123,8 @@ const updateUser = async (req, res, next) => {
     user.role = role;
   
     try {
-      await User.findOneAndUpdate(
-        { userId : userId},
+      await User.findByIdAndUpdate(
+        { _id : userId},
         user,
         { runValidators: false, context: 'query' }
     )
